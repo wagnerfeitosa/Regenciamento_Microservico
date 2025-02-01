@@ -1,0 +1,40 @@
+package com.wg.produto.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.wg.produto.dtos.ProdutoRecordDto;
+import com.wg.produto.models.ProdutoModel;
+import com.wg.produto.repositories.ProdutoRepository;
+
+@Service
+public class ProdutoService {
+	
+	@Autowired
+	private ProdutoRepository produtoRepository;
+	
+	public ProdutoRecordDto salvar(ProdutoRecordDto produtoDto) {
+		
+		ProdutoModel novoProduto = new ProdutoModel(produtoDto);
+		
+		produtoRepository.save(novoProduto);
+		
+		return produtoDto;
+	}
+	
+	public List<ProdutoModel> findAll(){
+		
+		return produtoRepository.findAll();
+	}
+	
+	public ProdutoModel findById(String idproduto) {
+		
+		Optional<ProdutoModel> produto = produtoRepository.findById(idproduto);
+		
+		return produto.get();
+	}
+
+}

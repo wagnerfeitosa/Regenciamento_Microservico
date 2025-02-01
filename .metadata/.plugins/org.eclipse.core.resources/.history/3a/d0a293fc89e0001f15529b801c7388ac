@@ -1,0 +1,5 @@
+package com.wg.controller_producao.services.exceptions;
+
+public class ResourceNotFoundException {
+
+}

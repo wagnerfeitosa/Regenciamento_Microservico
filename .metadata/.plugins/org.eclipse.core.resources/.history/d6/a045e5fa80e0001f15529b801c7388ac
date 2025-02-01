@@ -1,0 +1,5 @@
+package com.wg.pedido.services.exceptions;
+
+public class ResourceNotFoundException {
+
+}

@@ -1,0 +1,5 @@
+package com.wg.usuario.controller.exceptions;
+
+public class StandardError {
+
+}

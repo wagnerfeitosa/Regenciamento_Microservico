@@ -1,0 +1,87 @@
+package com.wg.usuario.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.wg.usuario.dtos.UsuarioRecordDto;
+import com.wg.usuario.models.UsuarioModel;
+import com.wg.usuario.producers.UsuarioProducer;
+import com.wg.usuario.repositories.UsuarioRepository;
+import com.wg.usuario.service.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
+
+@Service
+public class UsuarioService {
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private UsuarioProducer usuarioProducer;
+	
+	public UsuarioModel salvar(UsuarioRecordDto usuarioDto) {
+		
+		UsuarioModel novoUsuario = new UsuarioModel(usuarioDto);
+		
+		usuarioRepository.save(novoUsuario);
+		
+		usuarioProducer.publicMessageEmail(novoUsuario);
+		
+		
+		return novoUsuario;
+	}
+	
+	public List<UsuarioModel> findAll(){
+		
+		return usuarioRepository.findAll();
+	}
+	
+	public UsuarioModel findById(String id) {
+		
+		Optional<UsuarioModel> usuario = usuarioRepository.findById(id);
+		
+		return usuario.orElseThrow(()-> new ResourceNotFoundException(id));
+	}
+	
+	public void delete(String idusuario) {
+		
+		
+			UsuarioModel usuarioModel = usuarioRepository.getReferenceById(idusuario);
+			if(usuarioModel ==  null) {
+				throw new ResourceNotFoundException(idusuario);
+			}
+			else {
+				usuarioRepository.deleteById(usuarioModel.getIdusuario());
+			}
+			
+			
+	}
+	
+	public UsuarioModel update(String idusuario,UsuarioRecordDto usuarioDto) {
+		
+		try {
+			
+			UsuarioModel entity = usuarioRepository.getReferenceById(idusuario);
+			updateData(entity, usuarioDto);
+			
+			return usuarioRepository.save(entity);
+			
+		}catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException(idusuario);
+		}
+		
+	}
+	
+	public UsuarioModel updateData(UsuarioModel entity,UsuarioRecordDto usuarioDto) {
+		
+		entity.setNome(usuarioDto.nome());
+		entity.setEmail(usuarioDto.email());
+		
+		return entity;
+	}
+
+}

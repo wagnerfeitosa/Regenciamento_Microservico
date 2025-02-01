@@ -1,0 +1,5 @@
+package com.wg.pedido.controllers.exceptions;
+
+public class StandardError {
+
+}

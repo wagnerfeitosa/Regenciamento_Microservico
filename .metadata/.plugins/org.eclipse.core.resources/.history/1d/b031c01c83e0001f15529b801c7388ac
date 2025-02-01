@@ -1,0 +1,27 @@
+package com.wg.pedido.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
+
+import com.wg.pedido.models.PedidoModel;
+import com.wg.pedido.repositories.PedidoRepository;
+
+@Configuration
+public class ConfigTest implements CommandLineRunner{
+	
+	@Autowired
+	private PedidoRepository repository;
+	
+
+	@Override
+	public void run(String... args) throws Exception {
+		
+	
+		
+		PedidoModel p1 = new PedidoModel(null,"usuario123","produto123",2000,50.0);
+		repository.save(p1);
+		
+	}
+
+}

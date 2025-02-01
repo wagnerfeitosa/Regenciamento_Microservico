@@ -1,0 +1,5 @@
+package com.wg.produto.controllers.eceptions;
+
+public class StandardError {
+
+}
